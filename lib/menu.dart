@@ -8,14 +8,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Menu extends StatefulWidget {
   String canteenName,userID;
-  Menu(this.canteenName,this.userID);
+  Map userData;
+  Menu(this.canteenName,this.userData);
   @override
-  _MenuState createState() => _MenuState(canteenName,userID);
+  _MenuState createState() => _MenuState(canteenName,userData);
 }
 
 class _MenuState extends State<Menu> {
   String canteenName,userID;
-  _MenuState(this.canteenName,this.userID);
+  Map userData;
+  _MenuState(this.canteenName,this.userData);
   String pname;
   String pprice;
 
@@ -24,6 +26,7 @@ class _MenuState extends State<Menu> {
   DatabaseReference dRef = FirebaseDatabase.instance.reference();
   @override
   void initState() {
+    userID = userData['emailDot'];
     dRef.child('products').child(canteenName).once().then((value) {
       Map val = value.value;
       setState(() {
@@ -55,8 +58,8 @@ class _MenuState extends State<Menu> {
             icon: Icon(Icons.shopping_cart),
             color: Colors.white,
             onPressed: () {
-              Navigator.of(context).push(new CupertinoPageRoute(
-                  builder: (BuildContext context) => Mycart(canteenName,userID)));
+              Navigator.of(context).pushReplacement(new CupertinoPageRoute(
+                  builder: (BuildContext context) => Mycart(canteenName,userData)));
             },
           )
         ],

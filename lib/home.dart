@@ -3,22 +3,27 @@ import 'package:first_app/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'profile.dart';
+
 class MyHomePage extends StatefulWidget {
   String canteenName;
+  Map userData;
   String userID='a@bcom';
-  MyHomePage(this.canteenName,this.userID);
+  MyHomePage(this.canteenName,this.userData);
 
 
   @override
-  _MyHomePageState createState() => _MyHomePageState(canteenName,userID);
+  _MyHomePageState createState() => _MyHomePageState(canteenName,userData);
 }
 
 class _MyHomePageState extends State<MyHomePage> {
      String canteenName= '',userID;
-     _MyHomePageState(this.canteenName,this.userID);
+     Map userData;
+     _MyHomePageState(this.canteenName,this.userData);
     Future<SharedPreferences> _pref = SharedPreferences.getInstance();
     @override
     void initState() {
+      userID = userData['emailDot'];
      _pref.then((value) {
        setState(() {
          //canteenName = value.getString('canteenCurrent');
@@ -46,9 +51,9 @@ class _MyHomePageState extends State<MyHomePage> {
       body: IndexedStack(
         index: _currentindex,
           children: [
-            Homedish(canteenName,userID),
-            Menu(canteenName,userID),
-        Text('Profile')
+            Homedish(canteenName,userData),
+            Menu(canteenName,userData),
+            Profile(userData)
 
           ],),
       bottomNavigationBar: BottomNavigationBar(

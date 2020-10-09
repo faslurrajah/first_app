@@ -11,15 +11,16 @@ import 'models/cart.dart';
 class Mycart extends StatefulWidget {
   DatabaseReference dRef = FirebaseDatabase.instance.reference();
   String userID,canteenName;
-  Mycart(this.canteenName,this.userID);
+  Map userData;
+  Mycart(this.canteenName,this.userData);
   @override
-  _MycartState createState() => _MycartState(canteenName,userID);
+  _MycartState createState() => _MycartState(canteenName,userData);
 }
 
 class _MycartState extends State<Mycart> {
   String userID, canteenName;
-
-  _MycartState(this.canteenName, this.userID);
+  Map userData;
+  _MycartState(this.canteenName, this.userData);
 
   //final _store = Store();
   DatabaseReference dRef ;
@@ -29,6 +30,7 @@ class _MycartState extends State<Mycart> {
 
   @override
   void initState() {
+    userID = userData['emailDot'];
     Firebase.initializeApp();
     dRef = FirebaseDatabase.instance.reference();
     // TODO: implement initState
@@ -44,6 +46,7 @@ class _MycartState extends State<Mycart> {
           totalCost = totalCost + (tempPrice );
 
         });
+        print(cartData);
         cartData.forEach((key, value) { cartData[key]['q'] = 1;});
       });
       //
@@ -63,9 +66,9 @@ class _MycartState extends State<Mycart> {
             color: Colors.white,
           ),
           onPressed: () {
-            Navigator.of(context).push(new CupertinoPageRoute(
+            Navigator.of(context).pushReplacement(new CupertinoPageRoute(
                 builder: (BuildContext context) =>
-                    MyHomePage(canteenName, userID)));
+                    MyHomePage(canteenName, userData)));
           },
         ),
       ),
@@ -149,7 +152,7 @@ class _MycartState extends State<Mycart> {
                                           onPressed: () {
                                             dRef.child('cart').child(canteenName).child(userID).child(keys[index]).set(null);
                                             Navigator.of(context).pushReplacement(new CupertinoPageRoute(
-                                                builder: (BuildContext context) => Mycart(canteenName,userID)));
+                                                builder: (BuildContext context) => Mycart(canteenName,userData)));
                                             // _store.deleteProduct(
                                             //     CarT[index].piID);
                                           },

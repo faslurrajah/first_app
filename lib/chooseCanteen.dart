@@ -8,11 +8,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 
 class ChooseCanteen extends StatefulWidget {
+  Map userData;
+  ChooseCanteen(this.userData);
   @override
-  _ChooseCanteenState createState() => _ChooseCanteenState();
+  _ChooseCanteenState createState() => _ChooseCanteenState(userData);
 }
 
 class _ChooseCanteenState extends State<ChooseCanteen> {
+  Map userData;
+  _ChooseCanteenState(this.userData);
   DatabaseReference dRef = FirebaseDatabase.instance.reference();
   Map canteens = {};
   List canteenNames=[];
@@ -20,6 +24,8 @@ class _ChooseCanteenState extends State<ChooseCanteen> {
   String userID='a@bcom';
   @override
   void initState() {
+    userID = userData['emailDot'];
+    print(userData);
     dRef.child('canteens').once().then((value) {
       Map val = value.value;
       print(val);
@@ -51,7 +57,7 @@ class _ChooseCanteenState extends State<ChooseCanteen> {
                     });
 
                     Navigator.of(context).push(new CupertinoPageRoute(
-                        builder: (BuildContext context) => MyHomePage(canteens[canteenNames[index]]['cName'],userID)));
+                        builder: (BuildContext context) => MyHomePage(canteens[canteenNames[index]]['cName'],userData)));
                   },
                   child: Card(
                     child: Text(canteens[canteenNames[index]]['cName']),
