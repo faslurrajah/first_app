@@ -44,27 +44,26 @@ class _ChooseCanteenState extends State<ChooseCanteen> {
   }
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: Container(
-          child: ListView.builder(
-              itemCount: canteens.length,
-              itemBuilder:(context,index) {
-                return FlatButton(
-                  onPressed: (){
-                    _pref.then((value) {
-                      value.setString('canteenCurrent', canteens[canteenNames[index]]['cName']);
-                    });
+    return Scaffold(
+      appBar: AppBar(title: Text('Canteens'),),
+      body: Container(
+        child: ListView.builder(
+            itemCount: canteens.length,
+            itemBuilder:(context,index) {
+              return FlatButton(
+                onPressed: (){
+                  _pref.then((value) {
+                    value.setString('canteenCurrent', canteens[canteenNames[index]]['cName']);
+                  });
 
-                    Navigator.of(context).push(new CupertinoPageRoute(
-                        builder: (BuildContext context) => MyHomePage(canteens[canteenNames[index]]['cName'],userData)));
-                  },
-                  child: Card(
-                    child: Text(canteens[canteenNames[index]]['cName']),
-                  ),
-                );
-              } ),
-        ),
+                  Navigator.of(context).push(new CupertinoPageRoute(
+                      builder: (BuildContext context) => MyHomePage(canteens[canteenNames[index]]['cName'],userData)));
+                },
+                child: Card(
+                  child: Text(canteens[canteenNames[index]]['cName']),
+                ),
+              );
+            } ),
       ),
     );
   }

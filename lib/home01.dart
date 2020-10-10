@@ -338,25 +338,25 @@ class _HomedishState extends State<Homedish> {
                 TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(310, 0, 10, 0),
-              child: FlatButton(
-                //color: Colors.white,
-                textColor: Colors.blue,
-                disabledColor: Colors.grey,
-                disabledTextColor: Colors.black,
-                padding: EdgeInsets.all(3.0),
-                splashColor: Colors.green,
-                onPressed: () {
-                  Navigator.of(context).push(new CupertinoPageRoute(
-                      builder: (BuildContext context) => Menu(canteenName,userData)));
-                },
-                child: Text(
-                  "SEE ALL",
-                  style: TextStyle(fontSize: 12.0),
-                ),
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.fromLTRB(310, 0, 10, 0),
+            //   child: FlatButton(
+            //     //color: Colors.white,
+            //     textColor: Colors.blue,
+            //     disabledColor: Colors.grey,
+            //     disabledTextColor: Colors.black,
+            //     padding: EdgeInsets.all(3.0),
+            //     splashColor: Colors.green,
+            //     onPressed: () {
+            //       Navigator.of(context).push(new CupertinoPageRoute(
+            //           builder: (BuildContext context) => Menu(canteenName,userData)));
+            //     },
+            //     child: Text(
+            //       "SEE ALL",
+            //       style: TextStyle(fontSize: 12.0),
+            //     ),
+            //   ),
+            // ),
             Expanded(
               child: ListView.builder(
                 physics: NeverScrollableScrollPhysics(),
