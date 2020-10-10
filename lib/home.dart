@@ -53,7 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             Homedish(canteenName,userData),
             Menu(canteenName,userData),
-            Profile(userData)
+            Profile(userData,canteenName)
 
           ],),
       bottomNavigationBar: BottomNavigationBar(

@@ -26,6 +26,10 @@ class _HomedishState extends State<Homedish> {
   String pprice;
   Map products = {};
   List productNames=[];
+  Map recom = {};
+  List recomKeys=[];
+  Map trend = {};
+  List trendKeys=[];
   Map combo= {};
   List comboKeys = [];
   DatabaseReference dRef = FirebaseDatabase.instance.reference();
@@ -40,6 +44,28 @@ class _HomedishState extends State<Homedish> {
         products =  val;
         val.forEach((key, value) {
           productNames.add(key);
+        });
+      });
+
+      print(val);
+    });
+    dRef.child('Recomended').child(canteenName).once().then((value) {
+      Map val = value.value;
+      setState(() {
+        recom =  val;
+        val.forEach((key, value) {
+          recomKeys.add(key);
+        });
+      });
+
+      print(val);
+    });
+    dRef.child('Trending').child(canteenName).once().then((value) {
+      Map val = value.value;
+      setState(() {
+        trend =  val;
+        val.forEach((key, value) {
+          trendKeys.add(key);
         });
       });
 
@@ -113,7 +139,7 @@ class _HomedishState extends State<Homedish> {
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
 // scrollDirection: Axis.horizontal,
-                  itemCount: productNames.length,
+                  itemCount: trendKeys.length,
                   itemBuilder: (context, index) {
                     return Column(
                       children: [
@@ -141,7 +167,7 @@ class _HomedishState extends State<Homedish> {
                                               left: 18.0),
                                           child: Container(
                                               child: Image.network(
-                                                products[productNames[index]]['imageLink'],
+                                               trend[trendKeys[index]]['imageLink'],
                                                 height: 100,
                                               )),
                                         ),
@@ -152,14 +178,14 @@ class _HomedishState extends State<Homedish> {
                                             children: [
                                               Text('Product Name:'),
                                               new Text(
-                                                productNames[index],
+                                                trendKeys[index],
                                                 style: TextStyle(
                                                     fontWeight:
                                                     FontWeight.bold),
                                               ),
                                               Text('Product Price:'),
                                               new Text(
-                                                '${products[productNames[index]]['price']}',
+                                                '${trend[trendKeys[index]]['price']}',
                                                 style: TextStyle(
                                                     fontWeight:
                                                     FontWeight.bold),
@@ -182,8 +208,8 @@ class _HomedishState extends State<Homedish> {
                                             onPressed: () {
                                               print(userID);
                                               dRef.child('cart').child(canteenName).child(userID).push().set({
-                                                'itemName' : '${productNames[index]}',
-                                                'price' : '${products[productNames[index]]['price']}'
+                                                'itemName' : '${trendKeys[index]}',
+                                                'price' : '${trend[trendKeys[index]]['price']}'
                                               });
                                             },
                                             child: Text(
@@ -238,7 +264,7 @@ class _HomedishState extends State<Homedish> {
                 physics: NeverScrollableScrollPhysics(),
 // scrollDirection: Axis.horizontal,
               shrinkWrap: true,
-                  itemCount: products.length,
+                  itemCount: recom.length,
                   itemBuilder: (context, index) {
                     return Column(
                       children: [
@@ -266,7 +292,7 @@ class _HomedishState extends State<Homedish> {
                                               left: 18.0),
                                           child: Container(
                                               child: Image.network(
-                                                products[productNames[index]]['imageLink'],
+                                                recom[recomKeys[index]]['imageLink'],
                                                 height: 100,
                                               )),
                                         ),
@@ -277,14 +303,14 @@ class _HomedishState extends State<Homedish> {
                                             children: [
                                               Text('Product Name:'),
                                               new Text(
-                                                productNames[index],
+                                                recomKeys[index],
                                                 style: TextStyle(
                                                     fontWeight:
                                                     FontWeight.bold),
                                               ),
                                               Text('Product Price:'),
                                               new Text(
-                                                '${products[productNames[index]]['price']}',
+                                                '${recom[recomKeys[index]]['price']}',
                                                 style: TextStyle(
                                                     fontWeight:
                                                     FontWeight.bold),
@@ -306,8 +332,8 @@ class _HomedishState extends State<Homedish> {
                                             splashColor: Colors.green,
                                             onPressed: () {
                                               dRef.child('cart').child(canteenName).child(userID).push().set({
-                                                'itemName' : '${productNames[index]}',
-                                                'price' : '${products[productNames[index]]['price']}'
+                                                'itemName' : '${recomKeys[index]}',
+                                                'price' : '${recom[recomKeys[index]]['price']}'
                                               });
                                             },
                                             child: Text(
@@ -431,30 +457,30 @@ class _HomedishState extends State<Homedish> {
                                             ],
                                           ),
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 60.0),
-                                          child: FlatButton(
-                                            color: Colors.green,
-                                            textColor: Colors.white,
-                                            disabledColor: Colors.grey,
-                                            disabledTextColor:
-                                            Colors.black,
-                                            padding: EdgeInsets.all(3.0),
-                                            splashColor: Colors.green,
-                                            onPressed: () {
-                                              dRef.child('cart').child(canteenName).child(userID).push().set({
-                                                'itemName' : '${productNames[index]}',
-                                                'price' : '${products[productNames[index]]['price']}'
-                                              });
-                                            },
-                                            child: Text(
-                                              "ADD TO CART",
-                                              style: TextStyle(
-                                                  fontSize: 12.0),
-                                            ),
-                                          ),
-                                        ),
+                                        // Padding(
+                                        //   padding: const EdgeInsets.only(
+                                        //       top: 60.0),
+                                        //   child: FlatButton(
+                                        //     color: Colors.green,
+                                        //     textColor: Colors.white,
+                                        //     disabledColor: Colors.grey,
+                                        //     disabledTextColor:
+                                        //     Colors.black,
+                                        //     padding: EdgeInsets.all(3.0),
+                                        //     splashColor: Colors.green,
+                                        //     onPressed: () {
+                                        //       dRef.child('cart').child(canteenName).child(userID).push().set({
+                                        //         'itemName' : '${productNames[index]}',
+                                        //         'price' : '${products[productNames[index]]['price']}'
+                                        //       });
+                                        //     },
+                                        //     child: Text(
+                                        //       "ADD TO CART",
+                                        //       style: TextStyle(
+                                        //           fontSize: 12.0),
+                                        //     ),
+                                        //   ),
+                                        // ),
                                       ],
                                     ),
                                   ),

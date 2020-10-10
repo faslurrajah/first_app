@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:first_app/cartdb.dart';
 import 'package:first_app/home.dart';
+import 'package:first_app/selectPayment.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -180,27 +181,95 @@ class _MycartState extends State<Mycart> {
               width: 400.0,
               padding: const EdgeInsets.only(top: 16.0),
               child: new RaisedButton(
-                child: new Text("Send Order",
+                child: new Text("Buy",
                     style: new TextStyle(
                       color: Colors.black,
                     )),
                 colorBrightness: Brightness.dark,
                 onPressed: () {
-                  cartData.forEach((key, value) {
-                    if(value['q']!=0) {
-                      int tempPrice= int.parse(value['price']);
-                      int tempQ= value['q'];
-                      var itemCost=0;
-                      itemCost = itemCost + (tempPrice*tempQ );
-                      dRef.child('orders').child(canteenName).child(userID).child(value['itemName']).set(
-                          {
-                            'p' : value['price'],
-                            'q' : value['q'],
-                            't' : itemCost
-                          }
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text("Payment Method"),
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            FlatButton(
+                              onPressed: (){
+                                cartData.forEach((key, value) {
+                                  if(value['q']!=0) {
+                                    int tempPrice= int.parse(value['price']);
+                                    int tempQ= value['q'];
+                                    var itemCost=0;
+                                    itemCost = itemCost + (tempPrice*tempQ );
+                                    dRef.child('orders').child(canteenName).child(userID).child(value['itemName']).set(
+                                        {
+                                          'm' : 'cod',
+                                          'p' : value['price'],
+                                          'q' : value['q'],
+                                          't' : itemCost
+                                        }
+                                    );
+                                  }
+                                });
+                                Navigator.pop(context);
+                              },
+                                child: Text('Cash On Delivery')
+                            ),
+                            FlatButton(
+                                onPressed: (){
+                                  cartData.forEach((key, value) {
+                                    if(value['q']!=0) {
+                                      int tempPrice= int.parse(value['price']);
+                                      int tempQ= value['q'];
+                                      var itemCost=0;
+                                      itemCost = itemCost + (tempPrice*tempQ );
+                                      dRef.child('orders').child(canteenName).child(userID).child(value['itemName']).set(
+                                          {
+                                            'm' : 'cash',
+                                            'p' : value['price'],
+                                            'q' : value['q'],
+                                            't' : itemCost
+                                          }
+                                      );
+                                    }
+                                  });
+                                  Navigator.pop(context);
+                                },
+                                child: Text('Cash')
+                            ),
+                            FlatButton(
+                                onPressed: (){
+                                  //print(cartData);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => SelectPayment(userData,cartData,canteenName)),
+                                  );
+                      },
+                                child: Text('Card Payment'))
+                          ],
+                        ),
+                        elevation: 5,
+
                       );
-                    }
-                  });
+                    },
+                  );
+                  // cartData.forEach((key, value) {
+                  //   if(value['q']!=0) {
+                  //     int tempPrice= int.parse(value['price']);
+                  //     int tempQ= value['q'];
+                  //     var itemCost=0;
+                  //     itemCost = itemCost + (tempPrice*tempQ );
+                  //     dRef.child('orders').child(canteenName).child(userID).child(value['itemName']).set(
+                  //         {
+                  //           'p' : value['price'],
+                  //           'q' : value['q'],
+                  //           't' : itemCost
+                  //         }
+                  //     );
+                  //   }
+                  // });
 
                     print(cartData);
                 },
