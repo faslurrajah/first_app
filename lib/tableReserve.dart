@@ -28,7 +28,7 @@ class _TableResState extends State<TableRes> {
       setState(() {
         canteen = value.value;
         aTable = canteen['aTable'];
-        tables = count['reservation'][userData['emailDot']];
+        if(count['reservation'][userData['emailDot']]!=null)  tables = count['reservation'][userData['emailDot']];
       });
     });
     super.initState();
@@ -73,6 +73,32 @@ class _TableResState extends State<TableRes> {
                             );
                             aTable = aTable - 1;
                             tables = tables +1 ;
+                          }),
+                    ],
+                  ),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      border: Border.all()
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Cancel'),
+                      IconButton(
+                          icon: Icon(Icons.add_circle),
+                          onPressed: (){
+                            setState(() {
+
+                            });
+                            dRef.child('canteens').child(canteenName).child('aTable').set(
+                                aTable+1
+                            );
+                            dRef.child('canteens').child(canteenName).child('reservation').child(userData['emailDot']).set(
+                                tables-1
+                            );
+                            aTable = aTable + 1;
+                            tables = tables - 1 ;
                           }),
                     ],
                   ),
